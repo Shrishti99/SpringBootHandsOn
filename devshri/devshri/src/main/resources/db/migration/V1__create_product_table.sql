@@ -1,0 +1,9 @@
+CREATE TABLE PRODUCT
+(
+  id BIGSERIAL PRIMARY KEY,
+  type VARCHAR(255),
+  name VARCHAR(255),
+  price DOUBLE PRECISION,
+  quantity INTEGER,
+  description TEXT
+);
