@@ -22,4 +22,10 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductEntity> getAllproducts() {
         return productRepository.findAll();
     }
+
+    @Override
+    public List<ProductEntity> getProductsByType(String categoryName) {
+        return productRepository.findByType(categoryName);
+    }
+
 }

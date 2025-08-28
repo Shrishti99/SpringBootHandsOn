@@ -4,6 +4,7 @@ import com.devshri.devshri.entity.ProductEntity;
 import com.devshri.devshri.service.impl.ProductServiceImpl;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -28,5 +29,10 @@ public class eCommerceController {
     @GetMapping("/products")
     public List<ProductEntity> getAllProducts() {
         return productServiceimpl.getAllproducts();
+    }
+
+    @GetMapping("/products/type/{productType}")
+    public List<ProductEntity> getProductsByType(@PathVariable String productType) {
+        return productServiceimpl.getProductsByType(productType);
     }
 }
