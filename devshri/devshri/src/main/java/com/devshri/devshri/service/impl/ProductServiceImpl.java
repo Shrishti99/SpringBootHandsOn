@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -24,8 +25,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductEntity> getProductsByType(String categoryName) {
-        return productRepository.findByType(categoryName);
+    public Optional<ProductEntity> getProductsByType(Long id) {
+        Optional<ProductEntity> product = productRepository.findById(id);
+        return product;
     }
 
+    @Override
+    public Optional<ProductEntity> getProductsByName(String name){
+        return productRepository.findAll().stream().filter(product -> product.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    @Override
+    public List<ProductEntity> getProductByRange(Double min, Double max) {
+        return productRepository.findAll().stream()
+                .filter(product -> product.getPrice() >= min && product.getPrice() <= max)
+                .toList();
+    }
 }

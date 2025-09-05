@@ -13,8 +13,6 @@ import lombok.*;
 public class ProductEntity {
     @Id
     private Long id;
-    private String name;
-    private String description;
 
     public Long getId() {
         return id;
@@ -40,31 +38,17 @@ public class ProductEntity {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+    private String name;
+    private String description;
+    private float price;
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    private Double price;
-    private Integer quantity;
-    private String type;
 }
