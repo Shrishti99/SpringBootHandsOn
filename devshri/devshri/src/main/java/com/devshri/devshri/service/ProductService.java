@@ -14,4 +14,6 @@ public interface ProductService {
     public Optional<ProductEntity> getProductsByName(String name);
 
     public List<ProductEntity> getProductByRange(Double min, Double max);
+
+    public List<ProductEntity> getProductByDescription(String description);
 }

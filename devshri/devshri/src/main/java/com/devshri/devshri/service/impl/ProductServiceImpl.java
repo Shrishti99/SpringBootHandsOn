@@ -6,6 +6,7 @@ import com.devshri.devshri.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,30 @@ public class ProductServiceImpl implements ProductService {
     public Optional<ProductEntity> getProductsByName(String name){
         return productRepository.findAll().stream().filter(product -> product.getName().equalsIgnoreCase(name)).findFirst();
     }
+
+    @Override
+    public List<ProductEntity> getProductByDescription(String description) {
+        // split search description into words (ignoring case)
+        List<String> searchWords = Arrays.stream(description.split("\\s+"))
+                .map(String::toLowerCase)
+                .toList();
+
+        return productRepository.findAll().stream()
+                .filter(product -> {
+                    String productDesc = product.getDescription() != null
+                            ? product.getDescription().toLowerCase()
+                            : "";
+
+                    // count how many words match
+                    long matchCount = searchWords.stream()
+                            .filter(productDesc::contains)
+                            .count();
+
+                    return matchCount >= 3; // ✅ require at least 3 matches
+                })
+                .toList();
+    }
+
 
     @Override
     public List<ProductEntity> getProductByRange(Double min, Double max) {

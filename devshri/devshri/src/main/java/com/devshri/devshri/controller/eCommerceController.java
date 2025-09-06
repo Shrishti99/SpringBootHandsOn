@@ -33,24 +33,32 @@ public class eCommerceController {
         return productServiceimpl.getAllproducts();
     }
 
-    @GetMapping("/products/id/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        Optional<ProductEntity> product = productServiceimpl.getProductsByType(id);
-        if (product.isPresent()) {
-            return ResponseEntity.ok(product.get());
-        } else {
-            return ResponseEntity.status(404).body("No data found for the given id.");
+    @GetMapping("/products/{searchValue}")
+    public ResponseEntity<?> getProductBySearch(@PathVariable String searchValue){
+        Optional<ProductEntity> productByName = productServiceimpl.getProductsByName(searchValue);
+        List<ProductEntity> productByDescription = productServiceimpl.getProductByDescription(searchValue);
+        Long id;
+        try{
+            id = Long.parseLong(searchValue);
+        } catch (NumberFormatException e){
+            id = 0L;
         }
-    }
-
-    @GetMapping("/products/name/{name}")
-    public ResponseEntity<?> getProductByName(@PathVariable String name) {
-        System.out.println(name);
-        Optional<ProductEntity> products = productServiceimpl.getProductsByName(name);
-        if (products.isEmpty()) {
-            return ResponseEntity.status(404).body("No data found for the given name.");
-        } else {
-            return ResponseEntity.ok(products);
+        if (productByName.isPresent()){
+            return ResponseEntity.ok(productByName.get());
+        }
+        else if (!productByDescription.isEmpty()){
+            return ResponseEntity.ok(productByDescription);
+        }
+        else if (!id.equals(0L)){
+            Optional<ProductEntity> productById = productServiceimpl.getProductsByType(id);
+            if (productById.isPresent()){
+                return ResponseEntity.ok(productById.get());
+            } else {
+                return ResponseEntity.status(404).body("No Entity for given id is found.");
+            }
+        }
+        else {
+            return ResponseEntity.status(404).body("No Entity for given name is found.");
         }
     }
 
